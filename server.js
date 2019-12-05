@@ -27,7 +27,13 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/timestamp/:date_string?", (req, res) => {
   let dateStr = req.params.date_string;
   let d = new Date(dateStr);
-  if(d.getTime() === d.getTime()) {
+  if(dateStr === '') {
+    let d = new Date()
+    res.send({
+      "unix": d.getTime(),
+      "utc": d.toUTCString()
+    })
+  } else if(d.getTime() === d.getTime()) {
     res.send({
       "unix": d.getTime(),
       "utc": d.toUTCString()
