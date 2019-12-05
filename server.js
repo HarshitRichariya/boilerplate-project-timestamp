@@ -25,10 +25,10 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/timestamp/:date_string?", (req, res) => {
-  let dateStr = req.params.date_string;
+  let dateStr = '' + req.params.date_string;
   let d = new Date(dateStr);
-  if(dateStr === '') {
-    let d = new Date()
+  if(dateStr === "undefined") {
+    d = new Date()
     res.send({
       "unix": d.getTime(),
       "utc": d.toUTCString()
@@ -38,12 +38,21 @@ app.get("/api/timestamp/:date_string?", (req, res) => {
       "unix": d.getTime(),
       "utc": d.toUTCString()
     })
+  } else if(dateStr == Number(dateStr)){
+      d = new Date(Number(dateStr))
+      res.send({
+        "unix": d.getTime(),
+        "utc": d.toUTCString()
+      })
   } else {
     res.send({
-      "error": "Invalid Date"
+      "error": "Invalid Date",
+      "params": (req.params),
+      "dateStr": dateStr
     })
   }
 })
+
 
 
 // listen for requests :)
